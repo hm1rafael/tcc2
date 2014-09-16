@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" version="2.0" >
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	<link rel="stylesheet" type="text/css"
+		href="http://eclipse.org/orion/editor/releases/4.0/built-editor.css" />
+	<script>
+		require(
+				[ "http://eclipse.org/orion/editor/releases/4.0/built-editor-amd.min.js" ],
+				function(edit) {
+					edit({
+						className : "editor"
+					});
+				});
+	</script>
+	<spring:message code="label_editordesafio_index" htmlEscape="false"
+		var="title" />
+	<util:panel id="title" title="${title}">
+		<div style="height: 800px;width: 600px">
+		<pre class="editor" data-editor-lang="js" style="height: 800px">
+			function () {
+			
+			}
+		</pre>
+		</div>
+	</util:panel>
+</div>

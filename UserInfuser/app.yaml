@@ -1,0 +1,116 @@
+application: mattosgamification
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: false 
+
+handlers:
+
+# Admin Paths
+- url: /test/.*
+  script: serverside.testing.test.app
+  login: admin
+
+# Analytics 
+- url: /fantasm/.*
+  script: fantasm.main.APP
+  login: admin
+
+- url: /hello
+  script: serverside.main.app
+  login: admin 
+
+- url: /runanalytics
+  script: serverside.main.app
+  login: admin
+
+- url: /stats.*
+  script: $PYTHON_LIB/google/appengine/ext/appstats/ui.py
+  login: admin
+  secure: always
+
+- url: /getanalytics
+  script: serverside.main.app
+  secure: always 
+
+# NonSecure static HTML/image/style content
+- url: /
+  script: serverside.main.app
+  secure: always 
+
+- url: /console/
+  static_dir: static/console
+
+- url: /html/
+  static_dir: static/html
+
+- url: /images/
+  static_dir: static/images
+
+- url: /css/
+  static_dir: static/css
+
+- url: /lib/
+  static_dir: static/lib
+
+- url: /js/
+  static_dir: static/js
+
+# Individual files
+- url: /favicon\.ico
+  static_files: static/images/favicon.ico
+  upload: static/images/favicon.ico
+  
+- url: /googlehostedservice\.html
+  static_files: static/googlehostedservice.html
+  upload: static/googlehostedservice.html
+
+- url: /robots\.txt
+  static_files: static/robots.txt
+  upload: static/robots.txt
+
+- url: /sitemap\.xml
+  static_files: static/sitemap.xml
+  upload: static/sitemap.xml
+
+- url: /BingSiteAuth.xml
+  static_files: static/BingSiteAuth.xml
+  upload: static/BingSiteAuth.xml
+
+# Upload badge, and download badge
+- url: /badge/.*
+  script: serverside.main.app
+
+#Secure 
+- url: /(login|logout|account|admin|newslettersignup|signup)
+  script: serverside.main.app
+  secure: always
+  
+- url: /accinfo.*
+  script: serverside.accinfo.app
+  secure: always
+
+- url: /adminconsole.*
+  script: serverside.console.app
+  secure: always
+
+- url: /api/.*
+  script: serverside.api.api.app
+  secure: optional
+
+- url: /(logevents)
+  script: serverside.logs.app
+  secure: optional
+
+- url: /(updateaccount)
+  script: serverside.update_account.app
+  secure: optional
+
+# Not found 
+- url: /.*
+  #static_dir: static/html/404\.html
+  script: serverside.not_found.app
+
+builtins:
+#- datastore_admin: on
+- appstats: on

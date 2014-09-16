@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:spring="http://www.springframework.org/tags" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:find finderName="" id="find_desafios" path="/desafios">
+        <LABEL for="nomeDesafio">Nome desafio:</LABEL>
+        <INPUT id="nomeDesafio" name="nomeDesafio" type="text"/>
+        <BR/>
+		OU
+		<BR/>
+        <LABEL for="dificuldade">Dificuldade:</LABEL>
+        <SELECT id="dificuldade" name="dificuldade">
+            <OPTION value="FACIL">FACIL</OPTION>
+            <OPTION value="MEDIO">MEDIO</OPTION>
+            <OPTION value="DIFICIL">DIFICIL</OPTION>
+        </SELECT>
+    </form:find>
+    <BR/>
+    <page:list id="pl_tcc2_portal_domain_Desafio" items="${desafios}" z="H8S8jUREGGP7aTmhFkWnLWJe29w=">
+        <table:table data="${desafios}" id="l_tcc2_portal_domain_Desafio" path="/desafios" z="Eg2Gdpvvf5xMxuA5uTfJivVnjls=">
+            <table:column id="c_tcc2_portal_domain_Desafio_nomeDesafio" property="nomeDesafio" z="fqPLMiVcTmaqbcPe4lwrp6TNsHs="/>
+            <table:column id="c_tcc2_portal_domain_Desafio_dificuldade" property="dificuldade" z="/pIwirx1CuucJmgDl9GyvHbUaGk="/>
+            <table:column id="c_tcc2_portal_domain_Desafio_arquivosProjeto" property="arquivosProjeto" render="false" z="user-managed"/>
+            <table:column id="c_tcc2_portal_domain_Desafio_quantidadeDeValidacoes" property="quantidadeDeValidacoes" render="false" z="user-managed"/>
+            <table:column id="c_tcc2_portal_domain_Desafio_inputFile" property="inputFile" render="false" z="user-managed"/>
+            <table:column id="c_tcc2_portal_domain_Desafio_outputFile" property="outputFile" render="false" z="user-managed"/>
+            <table:column id="c_tcc2_portal_domain_Desafio_explicacaoDesafio" property="explicacaoDesafio" render="false" z="user-managed"/>
+        </table:table>
+    </page:list>
+</div>

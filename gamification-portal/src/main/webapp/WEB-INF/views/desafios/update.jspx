@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fc_tcc2_portal_domain_Desafio" modelAttribute="desafio" multipart="true" path="/desafios/update" render="${empty dependencies}" z="user-managed">
+        <field:input field="nomeDesafio" id="c_tcc2_portal_domain_Desafio_nomeDesafio" z="wXl1WtYkAOJGniDh01GYKWyUytk="/>
+        <field:select field="dificuldade" id="c_tcc2_portal_domain_Desafio_dificuldade" items="${dificuldades}" path="dificuldades" z="AxaxhA8GIw47iJt/MzqJg2tbApc="/>
+        <field:input disableFormBinding="true" field="inputFile" id="c_tcc2_portal_domain_Desafio_inputFile" type="file" z="user-managed"/>
+        <field:input disableFormBinding="true" field="outputFile" id="c_tcc2_portal_domain_Desafio_outputFile" type="file" z="user-managed"/>
+        <field:input disableFormBinding="true" field="explicacaoDesafio" id="c_tcc2_portal_domain_Desafio_explicacao" type="file" z="user-managed"/>
+        <div style="height: 300px">
+            <ul class="metricas" id="metricasPossiveis">
+            	<span style="font-weight: bold;font-size: medium;">Metricas possiveis</span>
+                <li>WMC<input name="metricasSelecionadas" type="hidden" value="WMC"/>
+                </li>
+                <li>LCOM1<input name="metricasSelecionadas" type="hidden" value="LCOM1"/>
+                </li>
+                <li>CBO<input name="metricasSelecionadas" type="hidden" value="CBO"/>
+                </li>
+                <li>DIT<input name="metricasSelecionadas" type="hidden" value="DIT"/>
+                </li>
+                <li>NPM<input name="metricasSelecionadas" type="hidden" value="NPM"/>
+                </li>
+                <li>RFC<input name="metricasSelecionadas" type="hidden" value="RFC"/>
+                </li>
+                <li>NOC<input name="metricasSelecionadas" type="hidden" value="NOC"/>
+                </li>
+            </ul>
+            <ul class="metricas" id="metricasSelecionadas">
+	            <span style="font-weight: bold;font-size: medium;">Metricas selecionadas</span>
+            </ul>
+        </div>
+        <style>
+.metricas {
+	list-style-type: none;
+	margin: 0;
+	padding: 0 0 2.5em;
+	float: left;
+	margin-right: 10px;
+	width: 100px;
+}
+
+#fc_tcc2_portal_domain_Desafio_submit {
+	position: absolute;
+}
+
+#metricasPossiveis li,#metricasSelecionadas li {
+	margin: 0 5px 5px 5px;
+	padding: 5px;
+	font-size: 1.2em;
+	width: 50px;
+	border: thin solid black;
+	list-style-position:inside;
+}
+
+.dijitTitlePaneContentOuter {
+	height: 550px;
+}
+
+#metricasPossiveis span,#metricasSelecionadas span {
+	
+
+}
+
+</style>
+        <SCRIPT type="text/javascript">
+			$(function() {
+				$('#metricasPossiveis').find('input').prop('disabled', true);
+				$('#metricasSelecionadas').find('input').prop('disabled', false);
+				$("#metricasPossiveis, #metricasSelecionadas").sortable({
+					connectWith : ".metricas",
+					update: function( event, ui ) {
+						$('#metricasPossiveis').find('input').prop('disabled', true);
+						$('#metricasSelecionadas').find('input').prop('disabled', false);
+					},
+					items: $("#metricasPossiveis li, #metricasSelecionadas li")
+				});
+				
+			});
+		</SCRIPT>
+        <field:simple field="desafioMetricas" id="c_tcc2_portal_domain_Desafio_desafioMetricas" messageCode="entity_reference_not_managed" messageCodeAttribute="Desafio Metricas" render="false" z="user-managed"/>
+        <field:simple field="usuariosDesafios" id="c_tcc2_portal_domain_Desafio_usuariosDesafios" messageCode="entity_reference_not_managed" messageCodeAttribute="Usuario Desafio" render="false" z="user-managed"/>
+        <field:input field="quantidadeDeValidacoes" id="c_tcc2_portal_domain_Desafio_quantidadeDeValidacoes" render="false" validationMessageCode="field_invalid_integer" z="user-managed"/>
+        <field:input field="explicacaoDesafio" id="c_tcc2_portal_domain_Desafio_explicacaoDesafio" z="ujjNSotXI9qjxEdu2ApTJ3Rpkvc=" render="false"/>
+    </form:update>
+    <form:dependency dependencies="${dependencies}" id="d_tcc2_portal_domain_Desafio" render="${not empty dependencies}" z="YnpJml7P244q4V8o1UEAFXCPMZM="/>
+</div>

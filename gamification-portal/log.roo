@@ -1,0 +1,89 @@
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log opened at 2014-04-23 22:45:35
+project --topLevelPackage tcc2.portal --projectName gamification-portal --java 7 --packaging WAR
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log closed at 2014-04-23 22:45:46
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log opened at 2014-04-23 22:45:51
+persistence setup --database POSTGRES --provider HIBERNATE 
+entity jpa --class tcc2.portal.domain.Usuario
+web mvc setup 
+security setup
+repository jpa --interface ~.repositorio.UsuarioRepositorio
+web mvc controller --class tcc2.portal.controller.CadastroController
+web mvc controller --class ~.controller.DesafioController
+web mvc scaffold --class ~.controller.DesafioController
+enum type --class tcc2.portal.domain.Dificuldade
+enum constant --name FACIL
+enum constant --name MEDIO
+enum constant --name DIFICIL
+entity jpa --class ~.domain.Desafio
+field string --fieldName nomeDesafio
+field enum --type ~.domain.Dificuldade --fieldName dificuldade
+entity jpa --class tcc2.portal.domain.ArquivoAjuda
+focus --class ~.domain.Desafio
+field set --fieldName arquivosAjuda --type ~.domain.ArquivoAjuda --cardinality ONE_TO_MANY --mappedBy arquivoAjuda
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log opened at 2014-04-25 00:00:37
+focus --class ~.domain.Desafio
+field string --fieldName explicacao
+field string --fieldName explicacao
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log opened at 2014-04-25 21:52:46
+web mvc controller --class tcc2.portal.controller.EditorDesafioController
+backup
+web mvc jquery setup
+// [failed] web mvc jquery add --type ~.controller.EditorDesafioController
+finder add --class ~.domain.Desafio --finderName DesafioFinder
+finder add --class ~.controller.DesafioController --finderName desafioFinder
+finder add --class ~.domain.Desafio --finderName desafio
+finder add --class ~.domain.Desafio --finderName desafioFinder
+finder list 
+finder add --finderName findDesafiosByNomeDesafioEquals --class ~.controller.DesafioController
+web mvc controller --class RankingController
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log opened at 2014-04-27 21:53:28
+finder list --class ~.domain.Desafio
+finder list --class ~.domain.Desafio
+finder add --finderName findDesafiosByNomeDesafioLike
+finder add --finderName findDesafiosByDificuldade
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log closed at 2014-04-28 20:16:12
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log opened at 2014-05-01 16:55:45
+entity jpa --class ~.domain.UsuarioDesafio
+field string email
+field string email
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log opened at 2014-05-03 20:36:34
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log closed at 2014-05-03 20:38:26
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log opened at 2014-05-04 23:48:15
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log closed at 2014-05-05 01:29:41
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log opened at 2014-05-05 02:55:37
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log closed at 2014-05-05 18:53:31
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log opened at 2014-05-12 00:10:24
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log opened at 2014-05-12 00:17:55
+backup
+web mvc controller --class ~.controller.AvaliacaoController
+focus --class ~.domain.UsuarioDesafio
+field date --fieldName datasSubmissao --type java.util.Date
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log opened at 2014-05-15 01:21:07
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log opened at 2014-05-16 00:07:17
+focus --class ~.domain.Desafio
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log closed at 2014-05-16 20:47:15
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log opened at 2014-05-17 00:04:40
+entity jpa --class ~.domain.DesafioMetricas
+field string metrica
+field number --fieldName idDesafio --type java.lang.Long
+entity jpa --class ~.domain.Metricas
+focus --class ~.domain.UsuarioDesafio
+field string wmc
+field string dit
+field string --fieldName cob
+field string rfc
+field string --fieldName noc
+field string --fieldName npm
+field string --fieldName lcom1
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log closed at 2014-05-18 21:05:16
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log opened at 2014-05-19 01:35:01
+focus --class ~.domain.Desafio
+focus --class ~.domain.UsuarioDesafio
+repository jpa --interface ~.repositorio.UsuarioDesafioRepository
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log opened at 2014-05-21 00:14:06
+backup
+web mvc controller --class ~.controller.TrofeuController
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log closed at 2014-05-21 12:28:23
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-08-08 21:25:45
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-08-09 00:52:19
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-09-14 00:15:34
