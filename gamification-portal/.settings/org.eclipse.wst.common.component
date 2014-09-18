@@ -3,13 +3,11 @@
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
-        <dependent-module archiveName="desafio-annotations-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/desafio-annotations/desafio-annotations">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <dependent-module archiveName="metrics-1.0.0-0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/metrics/metrics">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="userInfuserJavaClient-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/userInfuserJavaClient/userInfuserJavaClient">
+        <dependent-module archiveName="userInfuserJavaClient-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/UserInfuserJavaClient/UserInfuserJavaClient">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="context-root" value="gamification-portal"/>

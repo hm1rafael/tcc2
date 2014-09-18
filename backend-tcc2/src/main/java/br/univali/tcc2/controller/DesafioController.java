@@ -63,5 +63,10 @@ public class DesafioController {
 			return new Resultado();
 		}
 	}
+	
+	@RequestMapping(value = "/teste")
+	public String teste() {
+		return "OK";
+	}
  
 }

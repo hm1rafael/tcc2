@@ -1,9 +1,7 @@
 package desafio;
-
+   
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.tools.JavaCompiler;
 
 import desafio.aposta.Aposta;
 import desafio.aposta.ApostaFactory;
