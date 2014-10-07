@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -53,6 +54,7 @@ import tcc2.portal.domain.Dificuldade;
 import tcc2.portal.domain.UsuarioDesafio;
 import tcc2.portal.domain.UsuarioDesafioPK;
 import tcc2.portal.provider.UserInfuserProvider;
+import tcc2.portal.repositorio.DesafioMetricasRepositorio;
 import tcc2.portal.repositorio.UsuarioDesafioRepository;
 
 import com.google.gson.Gson;
@@ -68,6 +70,9 @@ public class DesafioController {
 	private UsuarioDesafioRepository usuarioDesafioRepository;
 	
 	@Autowired
+	private DesafioMetricasRepositorio desafioMetricasRepositorio;
+	
+	@Autowired
 	private UserInfuserProvider userInfuserProvider;
 	
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
@@ -76,23 +81,25 @@ public class DesafioController {
     			@RequestParam("outputFile") MultipartFile output,
     			@RequestParam("explicacaoDesafio") MultipartFile explicao,
     			Model uiModel, 
-    			HttpServletRequest httpServletRequest) throws IOException {			
+    			HttpServletRequest httpServletRequest, @RequestParam Map<String, String> valorMetricas) throws IOException {			
 		desafio.setInputFile(input.getBytes());
 		desafio.setOutputFile(output.getBytes());
 		desafio.setExplicacaoDesafio(explicao.getBytes());
 		int qtValidacoes = IOUtils.readLines(output.getInputStream()).size();
 		desafio.setQuantidadeDeValidacoes(qtValidacoes);
 		desafio.persist();
-		persistirMetricas(desafio, metricas);
+		persistirMetricas(desafio, metricas, valorMetricas);
         return "redirect:/desafios/" + encodeUrlPathSegment(desafio.getId().toString(), httpServletRequest);
     }
+ 
 
-
-	private void persistirMetricas(Desafio desafio, List<String> metricas) {
-		for (String string : metricas) {
-			DesafioMetricas desafioMetricas2 = new DesafioMetricas(string);
-			desafioMetricas2.setIdDesafio(desafio.getId());
-			desafioMetricas2.persist();
+	private void persistirMetricas(Desafio desafio, List<String> metricas, Map<String, String> valorMetricas) {
+		for (String metrica : metricas) {
+			DesafioMetricas desafioMetricas = new DesafioMetricas(metrica);
+			desafioMetricas.setIdDesafio(desafio.getId());
+			String valorMetrica = valorMetricas.get(String.format("%svalue",metrica));
+			desafioMetricas.setValorMetrica(Double.valueOf(valorMetrica));
+			desafioMetricas.persist();
 		}
 	}
 	
@@ -102,13 +109,13 @@ public class DesafioController {
     		@RequestParam(required = false, value = "metricasSelecionadas") List<String> metricas,
 			@RequestParam(required = false, value = "inputFile") MultipartFile input, 
 			@RequestParam(required = false, value = "outputFile") MultipartFile output,
-			@RequestParam(required = false, value = "explicacaoDesafio") MultipartFile explicao, Model uiModel, HttpServletRequest httpServletRequest) throws IllegalAccessException, InvocationTargetException, IOException {
+			@RequestParam(required = false, value = "explicacaoDesafio") MultipartFile explicao, Model uiModel, HttpServletRequest httpServletRequest, Map<String, String> valorMetricas) throws IllegalAccessException, InvocationTargetException, IOException {
         Desafio desafioDaBase = Desafio.findDesafio(desafio.getId());
         if (CollectionUtils.isNotEmpty(metricas)) {
         	DesafioMetricas desafioMetricas = new DesafioMetricas();
         	desafioMetricas.setId(desafio.getId());
         	desafioMetricas.remove();
-        	persistirMetricas(desafioDaBase, metricas);
+        	persistirMetricas(desafioDaBase, metricas, valorMetricas);
         }
         try {
         	desafio.setInputFile(input.getBytes());
@@ -150,10 +157,12 @@ public class DesafioController {
 		Desafio desafio = Desafio.findDesafio(id);
 		multipartEntityBuilder.addTextBody("nValidacoes", desafio.getQuantidadeDeValidacoes().toString());
 		HttpPost httpPost = new HttpPost("http://dry-spire-8208.herokuapp.com/");
+		//HttpPost httpPost = new HttpPost("http://localhost:8080/");
 		httpPost.setEntity(multipartEntityBuilder.build());
 		HttpResponse httpResponse = client.execute(httpPost);
 		byte[] byteArray = IOUtils.toByteArray(httpResponse.getEntity().getContent());		
-		Resultado resultadoResposta = gson.fromJson(new String(byteArray), Resultado.class);
+		String jsonResultado = new String(byteArray);
+		Resultado resultadoResposta = gson.fromJson(jsonResultado, Resultado.class);
 		ModelAndView modelAndView = new ModelAndView("forward:/desafios/" + id);
 		if (resultadoResposta.isExecutadoCorretamente()) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -161,7 +170,7 @@ public class DesafioController {
 			UsuarioDesafio usuarioDesafio = new UsuarioDesafio();
 			usuarioDesafio.setEmail(name);
 			usuarioDesafio.setIdDesafio(id);
-			UsuarioDesafio usuarioDesafioDaBase = UsuarioDesafio.findUsuarioDesafio(usuarioDesafio.getUsuarioDesafioPK());
+			UsuarioDesafio usuarioDesafioDaBase = usuarioDesafioRepository.findOne(usuarioDesafio.getUsuarioDesafioPK());
 			if (usuarioDesafioDaBase != null) {
 				usuarioDesafio = usuarioDesafioDaBase;
 				usuarioDesafio.setCompletado(true);
@@ -172,13 +181,18 @@ public class DesafioController {
 			usuarioDesafio.setLcom1(resultadoResposta.getLcomMedia());
 			usuarioDesafio.setNoc(resultadoResposta.getNocMedia());
 			usuarioDesafio.setRfc(resultadoResposta.getRfcMedia());
-			usuarioDesafio.setNpm(resultadoResposta.getNpmMedia()); 
+			usuarioDesafio.setNpm(resultadoResposta.getNpmMedia());
+			usuarioDesafio.setWmc(resultadoResposta.getWmcMedia());
 			usuarioDesafio.setDatasSubmissao(new Date());
+			usuarioDesafio.setTempoTotalCompilacao(resultadoResposta.getTempoDeCompilacao());
+			usuarioDesafio.setTempoTotalExecucao(resultadoResposta.getTempoDeExecucao());
+			usuarioDesafio.setQuatidadeClasses(resultadoResposta.getQuantidadeClasses());
+			definirResultadoDasMedias(id, resultadoResposta);
 			if (usuarioDesafio.isCompletado()) {
-				usuarioDesafio.merge();
+				usuarioDesafioRepository.save(usuarioDesafio);
 				modelAndView.addObject("jaFoiCompletado", true);
 			} else {
-				usuarioDesafio.persist();
+				usuarioDesafioRepository.save(usuarioDesafio);
 				userInfuserProvider.addPoints(desafio.getDificuldade().getPontuacao(), name);
 				modelAndView.addObject("pontuacao",desafio.getDificuldade().getPontuacao());
 			}
@@ -190,8 +204,58 @@ public class DesafioController {
 		} else {
 			modelAndView.addObject("executadoCorretamente", false);
 		}
-		modelAndView.addObject("resultado", new String(byteArray));
+		modelAndView.addObject("resultado", gson.toJson(resultadoResposta));
 		return modelAndView;
+	}
+
+
+	private void definirResultadoDasMedias(Long id, Resultado resultadoResposta) {
+		List<DesafioMetricas> metricasDesafio = desafioMetricasRepositorio.findByIdDesafio(id);
+		for (DesafioMetricas desafioMetricas : metricasDesafio) {
+			String metrica = desafioMetricas.getMetrica();
+			if (desafioMetricas.getValorMetrica() == null) {
+				desafioMetricas.setValorMetrica(0D);
+			}
+			if ("wmc".equalsIgnoreCase(metrica) && resultadoResposta.getWmcMedia() > desafioMetricas.getValorMetrica()) {
+				resultadoResposta.setWmcBad("Classes do seu programa possuem uma complexidade muito alta, verifique a quantidade de metodos de suas classes e tente pensar melhor nas responsabilidades.");
+			}
+			if ("cbo".equalsIgnoreCase(metrica) && resultadoResposta.getCboMedia() > desafioMetricas.getValorMetrica()) {
+				resultadoResposta.setCboBad("Classes do seu programa possuem um grande numero de relacionamentos, o que pode indicar um alto acoplamento entre as classes. Tente diminuir os mesmos");
+			}
+			if ("dit".equalsIgnoreCase(metrica) && resultadoResposta.getDitMedia() > desafioMetricas.getValorMetrica()) {
+				resultadoResposta.setDitBad("As classes do seu projeto herdam um grande numero de classes. Tente mudar de estrategia, tente compor as classes ao inves de estende-las");
+			}
+			if ("lcom1".equalsIgnoreCase(metrica) && resultadoResposta.getLcomMedia() > desafioMetricas.getValorMetrica()) {
+				resultadoResposta.setLcomBad("Sua classes possuem propriedades que nao sao usadas por todos os metodos, tenta extrair esses metodos para outras classes");
+			}
+			if ("noc".equalsIgnoreCase(metrica) && resultadoResposta.getNocMedia() > desafioMetricas.getValorMetrica()) {
+				resultadoResposta.setNocBad("O numero de classes filhas do seu projeto esta alto, tente nao utilizar tanta heranca, troque para composicao");
+			}
+			if ("rfc".equalsIgnoreCase(metrica) && resultadoResposta.getRfcMedia() > desafioMetricas.getValorMetrica()) {
+				resultadoResposta.setRfcBad("Para conseguir uma resposta no seu programa e necessario passar por muitas classes, tente melhorar as responsabilidades de suas classes");
+			}
+			if ("npm".equalsIgnoreCase(metrica) && resultadoResposta.getNpmMedia() > desafioMetricas.getValorMetrica()) {
+				resultadoResposta.setNpmBad("O numero de metodos publicos na sua classe e muito alto ");
+			}
+		}
+	}
+	
+	@RequestMapping("/dadosSolucao")
+	@ResponseBody
+	public void dadosSolucao(@RequestParam("id") Long desafioId,@RequestParam String email, HttpServletResponse response) throws IOException {
+		UsuarioDesafio usuarioDesafio = usuarioDesafioRepository.findByEmailAndIdDesafio(email, desafioId).get(0);
+		Resultado resultado = new Resultado();
+		resultado.setCboMedia(usuarioDesafio.getCbo());
+		resultado.setDitMedia(usuarioDesafio.getDit());
+		resultado.setLcomMedia(usuarioDesafio.getLcom1());
+		resultado.setNocMedia(usuarioDesafio.getNoc());
+		resultado.setNpmMedia(usuarioDesafio.getNpm());
+		resultado.setRfcMedia(usuarioDesafio.getRfc());
+		resultado.setWmcMedia(usuarioDesafio.getWmc());
+		resultado.setTempoDeCompilacao(usuarioDesafio.getTempoTotalCompilacao());
+		resultado.setTempoDeExecucao(usuarioDesafio.getTempoTotalExecucao());
+		definirResultadoDasMedias(desafioId, resultado);
+		IOUtils.write(gson.toJson(resultado), response.getOutputStream());
 	}
 	
 	@RequestMapping(value = "/downloadDesafio/{id}")
@@ -362,7 +426,7 @@ public class DesafioController {
     	UsuarioDesafioPK usuarioDesafioPkFiltro = new UsuarioDesafioPK();
     	usuarioDesafioPkFiltro.setEmail(email);
     	usuarioDesafioPkFiltro.setIdDesafio(idDesafio);
-    	UsuarioDesafio usuarioDesafio = UsuarioDesafio.findUsuarioDesafio(usuarioDesafioPkFiltro);
+    	UsuarioDesafio usuarioDesafio = usuarioDesafioRepository.findOne(usuarioDesafioPkFiltro);
     	byte[] solucao = usuarioDesafio.getSolucao();
     	IOUtils.write(solucao, response.getOutputStream());
     	response.setContentType("application/zip");

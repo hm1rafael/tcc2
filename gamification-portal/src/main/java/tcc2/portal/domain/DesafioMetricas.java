@@ -22,4 +22,6 @@ public class DesafioMetricas {
 
     private Long idDesafio;
     
+    private Double valorMetrica; 
+    
 }

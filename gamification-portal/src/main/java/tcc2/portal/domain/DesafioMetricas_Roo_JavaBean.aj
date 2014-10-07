@@ -23,4 +23,12 @@ privileged aspect DesafioMetricas_Roo_JavaBean {
         this.idDesafio = idDesafio;
     }
     
+    public Double DesafioMetricas.getValorMetrica() {
+        return this.valorMetrica;
+    }
+    
+    public void DesafioMetricas.setValorMetrica(Double valorMetrica) {
+        this.valorMetrica = valorMetrica;
+    }
+    
 }

@@ -10,7 +10,7 @@
         <field:input disableFormBinding="true" field="explicacaoDesafio" id="c_tcc2_portal_domain_Desafio_explicacao" type="file" z="user-managed"/>
         <div style="height: 300px">
             <ul class="metricas" id="metricasPossiveis">
-            	<span style="font-weight: bold;font-size: medium;">Metricas possiveis</span>
+                <span style="font-weight: bold;font-size: medium;">Metricas possiveis</span>
                 <li>WMC<input name="metricasSelecionadas" type="hidden" value="WMC"/>
                 </li>
                 <li>LCOM1<input name="metricasSelecionadas" type="hidden" value="LCOM1"/>
@@ -27,7 +27,7 @@
                 </li>
             </ul>
             <ul class="metricas" id="metricasSelecionadas">
-	            <span style="font-weight: bold;font-size: medium;">Metricas selecionadas</span>
+                <span style="font-weight: bold;font-size: medium;">Metricas selecionadas</span>
             </ul>
         </div>
         <style>
@@ -81,7 +81,7 @@
         <field:simple field="desafioMetricas" id="c_tcc2_portal_domain_Desafio_desafioMetricas" messageCode="entity_reference_not_managed" messageCodeAttribute="Desafio Metricas" render="false" z="user-managed"/>
         <field:simple field="usuariosDesafios" id="c_tcc2_portal_domain_Desafio_usuariosDesafios" messageCode="entity_reference_not_managed" messageCodeAttribute="Usuario Desafio" render="false" z="user-managed"/>
         <field:input field="quantidadeDeValidacoes" id="c_tcc2_portal_domain_Desafio_quantidadeDeValidacoes" render="false" validationMessageCode="field_invalid_integer" z="user-managed"/>
-        <field:input field="explicacaoDesafio" id="c_tcc2_portal_domain_Desafio_explicacaoDesafio" z="ujjNSotXI9qjxEdu2ApTJ3Rpkvc=" render="false"/>
+        <field:input field="explicacaoDesafio" id="c_tcc2_portal_domain_Desafio_explicacaoDesafio" render="false" z="user-managed"/>
     </form:update>
-    <form:dependency dependencies="${dependencies}" id="d_tcc2_portal_domain_Desafio" render="${not empty dependencies}" z="YnpJml7P244q4V8o1UEAFXCPMZM="/>
+    <form:update id="fu_tcc2_portal_domain_Desafio" modelAttribute="desafio" path="/desafios" versionField="Version" z="Dd5wAxc6VHu4OP43KMHZRDis2M4="/>
 </div>

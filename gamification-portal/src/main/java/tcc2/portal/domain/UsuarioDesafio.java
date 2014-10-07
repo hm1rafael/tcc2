@@ -74,4 +74,11 @@ public class UsuarioDesafio {
     /**
      */
     private Double lcom1;
+    
+    private Double tempoTotalExecucao;
+    
+    private Double tempoTotalCompilacao;
+    
+    private Integer quatidadeClasses;
+    
 }

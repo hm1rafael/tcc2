@@ -97,4 +97,28 @@ privileged aspect UsuarioDesafio_Roo_JavaBean {
         this.lcom1 = lcom1;
     }
     
+    public Double UsuarioDesafio.getTempoTotalExecucao() {
+        return this.tempoTotalExecucao;
+    }
+    
+    public void UsuarioDesafio.setTempoTotalExecucao(Double tempoTotalExecucao) {
+        this.tempoTotalExecucao = tempoTotalExecucao;
+    }
+    
+    public Double UsuarioDesafio.getTempoTotalCompilacao() {
+        return this.tempoTotalCompilacao;
+    }
+    
+    public void UsuarioDesafio.setTempoTotalCompilacao(Double tempoTotalCompilacao) {
+        this.tempoTotalCompilacao = tempoTotalCompilacao;
+    }
+    
+    public Integer UsuarioDesafio.getQuatidadeClasses() {
+        return this.quatidadeClasses;
+    }
+    
+    public void UsuarioDesafio.setQuatidadeClasses(Integer quatidadeClasses) {
+        this.quatidadeClasses = quatidadeClasses;
+    }
+    
 }

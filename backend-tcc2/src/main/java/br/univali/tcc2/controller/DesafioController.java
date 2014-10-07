@@ -48,8 +48,12 @@ public class DesafioController {
 		DesafioUsuario desafioUsuario = new DesafioUsuario();
 		desafioUsuario.setCodigoFonte(codigoFonte);
 		try {
+			long inicial = System.currentTimeMillis();
 			List<Classe> classes = this.verificadorCodigo.compilarCodigo(desafioUsuario);
+			long tempoCompilacao = System.currentTimeMillis() - inicial;
+			long inicialExecucao = System.currentTimeMillis();
 			boolean codigoExecutadoCorretamente= executorCodigo.executarCodigoUsuario(classes, numeroDeValidacoesQueDevemSerRealizadas, codigoFonte);
+			long tempoTotalExecucao = System.currentTimeMillis() - inicialExecucao;
 			MediaMetricas mediaMetricas = new MediaMetricas(classes.size());
 			for (Classe classe : classes) {
 				if (classe.getJavaClass() != null) {
@@ -58,7 +62,7 @@ public class DesafioController {
 					mediaMetricas.addMetris(metricas);
 				}
 			}
-			return new Resultado(mediaMetricas, codigoExecutadoCorretamente);
+			return new Resultado(mediaMetricas, codigoExecutadoCorretamente, tempoCompilacao, tempoTotalExecucao,classes.size() -1);
 		} catch (ErroCompilacaoException e) {
 			return new Resultado();
 		}

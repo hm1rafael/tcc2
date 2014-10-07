@@ -15,7 +15,6 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import tcc2.portal.controller.DesafioController;
 import tcc2.portal.domain.Desafio;
-import tcc2.portal.domain.DesafioMetricas;
 import tcc2.portal.domain.Dificuldade;
 
 privileged aspect DesafioController_Roo_Controller {
@@ -44,7 +43,7 @@ privileged aspect DesafioController_Roo_Controller {
     
     void DesafioController.populateEditForm(Model uiModel, Desafio desafio) {
         uiModel.addAttribute("desafio", desafio);
-        uiModel.addAttribute("desafiometricases", DesafioMetricas.findAllDesafioMetricases());
+        uiModel.addAttribute("desafiometricases", desafioMetricasRepositorio.findAll());
         uiModel.addAttribute("dificuldades", Arrays.asList(Dificuldade.values()));
         uiModel.addAttribute("usuariodesafios", usuarioDesafioRepository.findAll());
     }

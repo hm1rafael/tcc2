@@ -14,7 +14,7 @@ privileged aspect DesafioMetricas_Roo_Jpa_ActiveRecord {
     @PersistenceContext
     transient EntityManager DesafioMetricas.entityManager;
     
-    public static final List<String> DesafioMetricas.fieldNames4OrderClauseFilter = java.util.Arrays.asList("metrica", "idDesafio");
+    public static final List<String> DesafioMetricas.fieldNames4OrderClauseFilter = java.util.Arrays.asList("metrica", "idDesafio", "valorMetrica");
     
     public static final EntityManager DesafioMetricas.entityManager() {
         EntityManager em = new DesafioMetricas().entityManager;

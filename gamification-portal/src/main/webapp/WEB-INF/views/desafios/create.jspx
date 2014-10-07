@@ -10,24 +10,52 @@
         <field:input disableFormBinding="true" field="explicacaoDesafio" id="c_tcc2_portal_domain_Desafio_explicacao" type="file" z="user-managed"/>
         <div style="height: 300px">
             <ul class="metricas" id="metricasPossiveis">
-            	<span style="font-weight: bold;font-size: medium;">Metricas possiveis</span>
-                <li>WMC<input name="metricasSelecionadas" type="hidden" value="WMC"/>
+                <span style="font-weight: bold;font-size: medium;">Metricas possiveis</span>
+                <li>
+                	WMC
+       				<input name="metricasSelecionadas" type="hidden" value="WMC"/>
+                    <input max="20" min="1" name="WMCvalue" onchange="printValue()" step="1" style="width: 50px;display: none;" type="range"/>
+                    <input style="width: 30px;display: none;" type="text"/>
                 </li>
-                <li>LCOM1<input name="metricasSelecionadas" type="hidden" value="LCOM1"/>
+                <li>
+                	LCOM1
+                	<input name="metricasSelecionadas" type="hidden" value="LCOM1"/>
+                    <input max="1" min="0" name="LCOM1value" onchange="printValue()" step="0.1" style="width: 50px;display: none;" type="range"/>
+                    <input style="width: 30px;display: none;" type="text"/>
                 </li>
-                <li>CBO<input name="metricasSelecionadas" type="hidden" value="CBO"/>
+                <li>
+                	CBO
+               		<input name="metricasSelecionadas" type="hidden" value="CBO"/>
+                    <input max="4" min="1" name="CBOvalue" onchange="printValue()" step="1" style="width: 50px;display: none;" type="range"/>
+                    <input style="width: 30px;display: none;" type="text"/>
                 </li>
-                <li>DIT<input name="metricasSelecionadas" type="hidden" value="DIT"/>
+                <li>
+                	DIT
+                	<input name="metricasSelecionadas" type="hidden" value="DIT"/>
+                    <input max="6" min="1" name="DITvalue" onchange="printValue()" step="1" style="width: 50px;display: none;" type="range"/>
+                    <input style="width: 30px;display: none;" type="text"/>
                 </li>
-                <li>NPM<input name="metricasSelecionadas" type="hidden" value="NPM"/>
+                <li>
+                	NPM
+                	<input name="metricasSelecionadas" type="hidden" value="NPM"/>
+                    <input max="5" min="1" name="NPMvalue" onchange="printValue()" step="1" style="width: 50px;display: none;" type="range"/>
+                    <input style="width: 30px;display: none;" type="text"/>
                 </li>
-                <li>RFC<input name="metricasSelecionadas" type="hidden" value="RFC"/>
+                <li>
+                	RFC
+                	<input name="metricasSelecionadas" type="hidden" value="RFC"/>
+                    <input max="10" min="1" name="RFCvalue" onchange="printValue()" step="1" style="width: 50px;display: none;" type="range"/>
+                    <input style="width: 30px;display: none;" type="text"/>
                 </li>
-                <li>NOC<input name="metricasSelecionadas" type="hidden" value="NOC"/>
+                <li>
+                	NOC
+                	<input name="metricasSelecionadas" type="hidden" value="NOC"/>
+                    <input max="5" min="1" name="NOCvalue" onchange="printValue()" step="1" style="width: 50px;display: none;" type="range"/>
+                    <input style="width: 30px;display: none;" type="text"/>
                 </li>
             </ul>
             <ul class="metricas" id="metricasSelecionadas">
-	            <span style="font-weight: bold;font-size: medium;">Metricas selecionadas</span>
+                <span style="font-weight: bold;font-size: medium;">Metricas selecionadas</span>
             </ul>
         </div>
         <style>
@@ -44,11 +72,20 @@
 	position: absolute;
 }
 
-#metricasPossiveis li,#metricasSelecionadas li {
+#metricasPossiveis li {
 	margin: 0 5px 5px 5px;
 	padding: 5px;
 	font-size: 1.2em;
 	width: 50px;
+	border: thin solid black;
+	list-style-position:inside;
+}
+
+#metricasSelecionadas li {
+	margin: 0 5px 5px 5px;
+	padding: 5px;
+	font-size: 1.2em;
+	width: 150px;
 	border: thin solid black;
 	list-style-position:inside;
 }
@@ -71,17 +108,26 @@
 					connectWith : ".metricas",
 					update: function( event, ui ) {
 						$('#metricasPossiveis').find('input').prop('disabled', true);
+						$('#metricasPossiveis').find('input').hide()
 						$('#metricasSelecionadas').find('input').prop('disabled', false);
+						$('#metricasSelecionadas').find('input').show()
 					},
 					items: $("#metricasPossiveis li, #metricasSelecionadas li")
 				});
 				
+				$('input[type="range"').change(function(e) {
+					var slider = $(this)
+					var valor = slider.val()
+					slider.siblings('input').not(':hidden').val(valor)	
+				})
+				
 			});
+		
 		</SCRIPT>
         <field:simple field="desafioMetricas" id="c_tcc2_portal_domain_Desafio_desafioMetricas" messageCode="entity_reference_not_managed" messageCodeAttribute="Desafio Metricas" render="false" z="user-managed"/>
         <field:simple field="usuariosDesafios" id="c_tcc2_portal_domain_Desafio_usuariosDesafios" messageCode="entity_reference_not_managed" messageCodeAttribute="Usuario Desafio" render="false" z="user-managed"/>
         <field:input field="quantidadeDeValidacoes" id="c_tcc2_portal_domain_Desafio_quantidadeDeValidacoes" render="false" validationMessageCode="field_invalid_integer" z="user-managed"/>
-        <field:input field="explicacaoDesafio" id="c_tcc2_portal_domain_Desafio_explicacaoDesafio" z="ujjNSotXI9qjxEdu2ApTJ3Rpkvc=" render="false"/>
+        <field:input field="explicacaoDesafio" id="c_tcc2_portal_domain_Desafio_explicacaoDesafio" render="false" z="user-managed"/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_tcc2_portal_domain_Desafio" render="${not empty dependencies}" z="YnpJml7P244q4V8o1UEAFXCPMZM="/>
 </div>
